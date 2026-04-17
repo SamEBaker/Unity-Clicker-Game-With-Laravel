@@ -1,12 +1,6 @@
-FROM php:8.4-fmp
+FROM php:8.4-cli
 
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
-RUN apt-get update && apt-get install -y \
-    nginx \
-    unzip \
-    git \
-    libzip-dev \
-    && docker-php-ext-install pdo pdo_mysql zip
+COPY . .
 
 # Image config
 ENV SKIP_COMPOSER 1
@@ -23,4 +17,4 @@ ENV LOG_CHANNEL stderr
 # Allow composer to run as root
 ENV COMPOSER_ALLOW_SUPERUSER 1
 
-CMD ["/start.sh"]
+CMD ["scripts/start.sh"]
