@@ -1,24 +1,19 @@
-FROM php:8.4-fpm
+FROM php:8.3-cli
+
+WORKDIR /app
 
 RUN apt-get update && apt-get install -y \
-    nginx \
-    git \
-    unzip \
-    libzip-dev \
+    unzip curl git libzip-dev \
     && docker-php-ext-install pdo pdo_mysql zip
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
-
-WORKDIR /var/www/html
 
 COPY . .
 
 RUN composer install --no-dev --optimize-autoloader
 
-# Copy nginx config
-COPY nginx.conf /etc/nginx/nginx.conf
+RUN php artisan config:clear
 
-# permissions
-RUN chown -R www-data:www-data /var/www/html
+EXPOSE 10000
 
-CMD sh -c "php-fpm -D && nginx -g 'daemon off;'"
+CMD php artisan serve --host=0.0.0.0 --port=10000
