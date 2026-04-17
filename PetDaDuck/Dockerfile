@@ -1,20 +1,32 @@
-FROM php:8.4-cli
+FROM php:8.2-fpm
 
+# Install dependencies
+RUN apt-get update && apt-get install -y \
+    nginx \
+    git \
+    unzip \
+    libzip-dev \
+    && docker-php-ext-install pdo pdo_mysql zip
+
+# Install Composer
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
+WORKDIR /var/www
+
+# Copy project
 COPY . .
 
-# Image config
-ENV SKIP_COMPOSER 1
-ENV WEBROOT /var/www/html/public
-ENV PHP_ERRORS_STDERR 1
-ENV RUN_SCRIPTS 1
-ENV REAL_IP_HEADER 1
+# Install PHP dependencies
+RUN composer install --no-dev --optimize-autoloader
 
-# Laravel config
-ENV APP_ENV production
-ENV APP_DEBUG false
-ENV LOG_CHANNEL stderr
+# Permissions
+RUN chown -R www-data:www-data /var/www
 
-# Allow composer to run as root
-ENV COMPOSER_ALLOW_SUPERUSER 1
+# Copy Nginx config
+COPY nginx.conf /etc/nginx/nginx.conf
 
-CMD ["/start.sh"]
+# Expose port (Render injects PORT at runtime)
+EXPOSE 80
+
+# Start both PHP-FPM and Nginx
+CMD sh -c "php-fpm -D && nginx -g 'daemon off;'"
