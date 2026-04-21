@@ -61,7 +61,7 @@ class AuthController extends Controller
         $user = $request->user();
 
         // update current score
-        //$user->score = $request->score;
+        $user->score = $request->score;
 
         // update high score
         if ($request->score > $user->high_score) {
