@@ -48,9 +48,9 @@ class AuthController extends Controller
 }
     public function leaderboard()
     {
-        $users = User::orderBy('high_score', 'desc')
+        $users = User::orderBy('high_score', 'score', 'desc')
             ->limit(10)
-            ->get(['username', 'high_score']);
+            ->get(['username', 'score', 'high_score']);
 
         return response()->json([
             'items' => $users
