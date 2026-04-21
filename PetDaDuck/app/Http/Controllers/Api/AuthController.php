@@ -17,6 +17,7 @@ class AuthController extends Controller
     ]);
 
     $user = User::where('username', $request->username)->first();
+    $newUser = false;
 
     // AUTO REGISTER if not exists
     if (!$user) {
@@ -25,8 +26,10 @@ class AuthController extends Controller
             'name' => $request->username, // optional display name
             'password' => Hash::make($request->password),
             'score' => 0,
+            'high_score' => 0,
             'sprite' => 0,
         ]);
+        $newUser = true;
     }
 
     // CHECK PASSWORD
@@ -40,14 +43,15 @@ class AuthController extends Controller
 
     return response()->json([
         'token' => $token,
-        'user' => $user
+        'user' => $user,
+        'newUser' => $newUser
     ]);
 }
     public function leaderboard()
     {
-        $users = User::orderBy('score', 'desc')
+        $users = User::orderBy('high_score', 'desc')
             ->limit(10)
-            ->get(['username', 'score']);
+            ->get(['username', 'high_score']);
 
         return response()->json([
             'items' => $users
@@ -56,26 +60,40 @@ class AuthController extends Controller
     public function saveScore(Request $request)
     {
         $user = $request->user();
-        $user->score = max($user->score, $request->score); //saves highest score
+
+        // update current score
+        $user->score = $request->score;
+
+        // update high score
+        if ($request->score > $user->high_score) {
+            $user->high_score = $request->score;
+        }
+
         $user->save();
 
-        return response()->json(['status' => 'Success', 'new_score' => $user->score]);
+        return response()->json([
+            'status' => 'Success',
+            'score' => $user->score,
+            'high_score' => $user->high_score
+        ]);
     }
-    //create function for saving sprite selection
+        
+    
+    //saving sprite upgrade index
     public function saveSprite(Request $request)
-{
-    $request->validate([
-        'sprite' => 'required|integer'
-    ]);
+    {
+        $request->validate([
+            'sprite' => 'required|integer'
+        ]);
 
-    $user = $request->user();
-    $user->sprite = $request->sprite; // make sure column exists!!!!
-    $user->save();
+        $user = $request->user();
+        $user->sprite = $request->sprite;
+        $user->save();
 
-    return response()->json([
-        'status' => 'Success',
-        'sprite' => $user->sprite
-    ]);
-}
+        return response()->json([
+            'status' => 'Success',
+            'sprite' => $user->sprite
+        ]);
+    }
 }
  
