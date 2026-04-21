@@ -27,7 +27,9 @@ return new class extends Migration
             if (Schema::hasColumn('users', 'score')) {
                 $table->dropColumn('score');
             }
-
+            if (Schema::hasColumn('users', 'high_score')) {
+                $table->dropColumn('high_score');
+            }
             if (Schema::hasColumn('users', 'sprite')) {
                 $table->dropColumn('sprite');
             }
