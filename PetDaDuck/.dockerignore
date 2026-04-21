@@ -1,0 +1,14 @@
+.git
+.gitignore
+node_modules
+vendor
+npm-debug.log
+yarn-error.log
+.env
+.env.*
+storage/logs
+storage/framework/cache
+storage/framework/sessions
+storage/framework/views
+Dockerfile
+README.md
