@@ -22,9 +22,9 @@ class AuthController extends Controller
     if (!$user) {
         $user = User::create([
             'username' => $request->username,
-            'name' => $request->username, // optional display name
             'password' => Hash::make($request->password),
             'score' => 0,
+            'high_score' => 0,
             'sprite' => 0,
         ]);
     }
@@ -45,9 +45,9 @@ class AuthController extends Controller
 }
     public function leaderboard()
     {
-        $users = User::orderBy('score', 'desc')
+        $users = User::orderBy('high_score', 'desc')
             ->limit(10)
-            ->get(['username', 'score']);
+            ->get(['username', 'high_score']);
 
         return response()->json([
             'items' => $users
@@ -56,7 +56,8 @@ class AuthController extends Controller
     public function saveScore(Request $request)
     {
         $user = $request->user();
-        $user->score = max($user->score, $request->score); //saves highest score
+        $user->score = $request->score;
+        $user->high_score = max($user->score, $request->score); //saving high-score
         $user->save();
 
         return response()->json(['status' => 'Success', 'new_score' => $user->score]);
@@ -69,7 +70,7 @@ class AuthController extends Controller
     ]);
 
     $user = $request->user();
-    $user->sprite = $request->sprite; // make sure column exists!!!!
+    $user->sprite = $request->sprite; 
     $user->save();
 
     return response()->json([

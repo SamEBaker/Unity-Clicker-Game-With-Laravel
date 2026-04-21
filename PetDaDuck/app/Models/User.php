@@ -15,6 +15,7 @@ class User extends Authenticatable
         'username',
         'name',
         'password',
+        'high_score',
         'score',
         'sprite',
     ];

@@ -25,6 +25,7 @@ return new class extends Migration
 
             // game data
             $table->integer('score')->default(0);
+            $table->integer('high_score')->default(0);
             $table->integer('sprite')->default(0);
 
             $table->rememberToken();

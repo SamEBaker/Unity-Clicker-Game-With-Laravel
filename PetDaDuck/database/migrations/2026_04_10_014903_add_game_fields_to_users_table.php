@@ -12,7 +12,9 @@ return new class extends Migration
             if (!Schema::hasColumn('users', 'score')) {
                 $table->integer('score')->default(0);
             }
-
+            if (!Schema::hasColumn('users', 'high_score')) {
+                $table->integer('high_score')->default(0);
+            }
             if (!Schema::hasColumn('users', 'sprite')) {
                 $table->integer('sprite')->default(0);
             }
@@ -24,6 +26,9 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             if (Schema::hasColumn('users', 'score')) {
                 $table->dropColumn('score');
+            }
+            if (Schema::hasColumn('users', 'high_score')) {
+                $table->dropColumn('high_score');
             }
 
             if (Schema::hasColumn('users', 'sprite')) {
