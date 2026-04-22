@@ -23,7 +23,6 @@ class AuthController extends Controller
     if (!$user) {
         $user = User::create([
             'username' => $request->username,
-            'name' => $request->username, // optional display name
             'password' => Hash::make($request->password),
             'score' => 0,
             'high_score' => 0,
@@ -49,9 +48,9 @@ class AuthController extends Controller
 }
     public function leaderboard()
     {
-        $users = User::orderBy('high_score', 'desc')
+        $users = User::orderBy('high_score', 'score', 'desc')
             ->limit(10)
-            ->get(['username', 'high_score']);
+            ->get(['username', 'score', 'high_score']);
 
         return response()->json([
             'items' => $users
@@ -86,9 +85,9 @@ class AuthController extends Controller
             'sprite' => 'required|integer'
         ]);
 
-        $user = $request->user();
-        $user->sprite = $request->sprite;
-        $user->save();
+    $user = $request->user();
+    $user->sprite = $request->sprite; 
+    $user->save();
 
         return response()->json([
             'status' => 'Success',
