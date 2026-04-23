@@ -23,6 +23,7 @@ class AuthController extends Controller
     if (!$user) {
         $user = User::create([
             'username' => $request->username,
+            'name' => $request->username,
             'password' => Hash::make($request->password),
             'score' => 0,
             'high_score' => 0,
