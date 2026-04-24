@@ -28,6 +28,7 @@ class AuthController extends Controller
             'score' => 0,
             'high_score' => 0,
             'sprite' => 0,
+            'score_increase' => 0,
         ]);
         $newUser = true;
     }
@@ -85,14 +86,18 @@ class AuthController extends Controller
         $request->validate([
             'sprite' => 'required|integer'
         ]);
-
+        $request->validate([
+            'score_increase' => 'required|integer'
+        ]);
     $user = $request->user();
     $user->sprite = $request->sprite; 
+    $user->scoreIncreaseAmt = $request->score_increase;
     $user->save();
 
         return response()->json([
             'status' => 'Success',
-            'sprite' => $user->sprite
+            'sprite' => $user->sprite,
+            'score_increase' => $user->score_increase
         ]);
     }
 }

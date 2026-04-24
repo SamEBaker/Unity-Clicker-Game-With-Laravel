@@ -18,6 +18,9 @@ return new class extends Migration
             if (!Schema::hasColumn('users', 'sprite')) {
                 $table->integer('sprite')->default(0);
             }
+            if (!Schema::hasColumn('users', 'score_increase')) {
+                $table->integer('score_increase')->default(0);
+            }
         });
     }
 
@@ -32,6 +35,9 @@ return new class extends Migration
             }
             if (Schema::hasColumn('users', 'sprite')) {
                 $table->dropColumn('sprite');
+            }
+            if (Schema::hasColumn('users', 'score_increase')) {
+                $table->dropColumn('score_increase');
             }
         });
     }

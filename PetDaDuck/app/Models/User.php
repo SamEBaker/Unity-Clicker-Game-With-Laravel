@@ -18,6 +18,7 @@ class User extends Authenticatable
         'high_score',
         'score',
         'sprite',
+        'score_increase',
     ];
 
     protected $hidden = [
