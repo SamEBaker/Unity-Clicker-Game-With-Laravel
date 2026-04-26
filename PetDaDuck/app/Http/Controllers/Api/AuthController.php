@@ -86,15 +86,16 @@ class AuthController extends Controller
     public function saveSprite(Request $request)
     {
         $request->validate([
-            'sprite' => 'required|integer'
-        ]);
-        $request->validate([
+            'sprite' => 'required|integer',
             'score_increase' => 'required|integer'
         ]);
-    $user = $request->user();
-    $user->sprite = $request->sprite; 
-    $user->scoreIncreaseAmt = $request->score_increase;
-    $user->save();
+
+        $user = $request->user();
+
+        $user->sprite = $request->sprite;
+        $user->score_increase = $request->score_increase;
+
+        $user->save();
 
         return response()->json([
             'status' => 'Success',
