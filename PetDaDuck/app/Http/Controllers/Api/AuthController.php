@@ -46,8 +46,8 @@ class AuthController extends Controller
 
     return response()->json([
         'token' => $token,
-        //'user' => $user,
-        //'newUser' => $newUser
+        'user' => $user,
+        'newUser' => $newUser
     ]);
 }
     public function leaderboard()
