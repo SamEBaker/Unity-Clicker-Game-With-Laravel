@@ -28,9 +28,11 @@ class AuthController extends Controller
             'score' => 0,
             'high_score' => 0,
             'sprite' => 0,
-            'score_increase' => 0,
+            'score_increase' => 1,
         ]);
         $newUser = true;
+    } else {
+        $newUser = false;
     }
 
     // CHECK PASSWORD
@@ -44,8 +46,8 @@ class AuthController extends Controller
 
     return response()->json([
         'token' => $token,
-        'user' => $user,
-        'newUser' => $newUser
+        //'user' => $user,
+        //'newUser' => $newUser
     ]);
 }
     public function leaderboard()

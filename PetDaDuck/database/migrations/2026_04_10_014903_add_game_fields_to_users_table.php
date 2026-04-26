@@ -19,7 +19,7 @@ return new class extends Migration
                 $table->integer('sprite')->default(0);
             }
             if (!Schema::hasColumn('users', 'score_increase')) {
-                $table->integer('score_increase')->default(0);
+                $table->integer('score_increase')->default(1);
             }
         });
     }
