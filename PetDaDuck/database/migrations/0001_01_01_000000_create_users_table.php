@@ -27,7 +27,7 @@ return new class extends Migration
             $table->integer('score')->default(0);
             $table->integer('high_score')->default(0);
             $table->integer('sprite')->default(0);
-
+            $table->integer('score_increase')->default(0);
             $table->rememberToken();
             $table->timestamps();
         });
